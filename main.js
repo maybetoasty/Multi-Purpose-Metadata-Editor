@@ -24,7 +24,7 @@ function getExifToolPath() {
 function createWindow() {
   const win = new BrowserWindow({
     width: 950, // Adjusted for no sidebar
-    height: 950,
+    height: 970,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
@@ -34,7 +34,8 @@ function createWindow() {
     minWidth: 800, // Adjusted min width
     minHeight: 750,
   });
-
+  // --- ADD THIS LINE TO HIDE THE MENU BAR ---
+  win.setMenu(null);
   win.loadFile('index.html');
 }
 
