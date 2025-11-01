@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Metadata Toolkit</title>
+    <style>
+      body {
+        background-color: #18181b; color: #e4e4e7;
+        font-family: 'Inter', sans-serif;
+      }
+      .card {
+        background-color: #27272a; border: 1px solid #3f3f46;
+        border-radius: 0.5rem;
+      }
+      .input-display {
+        background-color: #3f3f46; border: 1px solid #52525b;
+        color: #d4d4d8; border-radius: 0.375rem;
+        padding: 0.6rem 0.75rem; font-size: 0.875rem;
+      }
+      .log {
+        background-color: #18181b; color: #a1a1aa; border: 1px solid #3f3f46;
+        font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+        font-size: 0.8rem; line-height: 1.4;
+      }
+      .log-success { color: #4ade80; }
+      .log-error   { color: #f87171; }
+      .log-warning { color: #facc15; }
+      .log-info    { color: #60a5fa; }
+
+      .form-input {
+        background-color: #3f3f46; border: 1px solid #52525b;
+        color: #e4e4e7; border-radius: 0.375rem;
+        padding: 0.6rem 0.75rem; font-size: 0.875rem;
+        transition: border-color 0.2s, box-shadow 0.2s;
+      }
+      .form-input:focus {
+        outline: none; border-color: #60a5fa;
+        box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.3);
+      }
+      button:focus-visible { outline: 2px solid #60a5fa; outline-offset: 2px; }
+      
+      /* Navigation */
+      .nav-button {
+        display: flex; align-items: center; width: 100%;
+        padding: 0.75rem 1rem; border-radius: 0.375rem;
+        color: #a1a1aa; font-weight: 500;
+        transition: background-color 0.15s, color 0.15s;
+      }
+      .nav-button:hover { background-color: #3f3f46; color: #e4e4e7; }
+      .nav-button.active {
+        background-color: #0066FF; color: #ffffff;
+      }
+      .nav-button svg { width: 1.25rem; height: 1.25rem; margin-right: 0.75rem; }
+
+      ::-webkit-scrollbar { width: 8px; height: 8px; }
+      ::-webkit-scrollbar-track { background: #27272a; border-radius: 4px; }
+      ::-webkit-scrollbar-thumb { background: #52525b; border-radius: 4px; }
+      ::-webkit-scrollbar-thumb:hover { background: #71717a; }
+
+      /* Progress bar */
+      .progress-bar {
+        background-color: #3f3f46; display: none; height: 6px;
+      }
+      .progress-bar-inner {
+        background-color: #60a5fa; height: 100%; width: 100%; border-radius: 3px;
+        animation: indeterminate-progress 2s infinite cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      @keyframes indeterminate-progress {
+        0% { transform: translateX(-100%) scaleX(0.5); }
+        50% { transform: translateX(0%) scaleX(0.5); }
+        100% { transform: translateX(100%) scaleX(0.5); }
+      }
+    </style>
+</head>
+<body class="flex h-screen">
+
+  <!-- Sidebar Navigation -->
+  <nav class="w-64 bg-zinc-900 p-4 flex flex-col space-y-2 border-r border-zinc-700">
+    <div class="text-center py-4 mb-4">
+      <h1 class="text-xl font-semibold text-white">Metadata Toolkit</h1>
+    </div>
+    <button id="nav-batch" class="nav-button active">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v.75m-8.69-6.44-2.12-2.12a1.5 1.5 0 0 0-2.12 0l-1.99 1.99m11.64 0-1.99-1.99a1.5 1.5 0 0 0-2.12 0l-2.12 2.12m11.64 0-2.12-2.12m-9.52 3.52v9a2.25 2.25 0 0 0 2.25 2.25h9.75a2.25 2.25 0 0 0 2.25-2.25v-9m-14.25 0H21m-11.64 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+      </svg>
+      <span>Google Photos Fixer</span>
+    </button>
+    <button id="nav-single" class="nav-button">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+      </svg>
+      <span>Single File Editor</span>
+    </button>
+  </nav>
+
+  <!-- Main Content Area -->
+  <main class="flex-1 p-6 md:p-8 overflow-y-auto">
+    <div class="max-w-3xl mx-auto">
+
+      <!-- ===== View 1: Google Photos Batch Fixer ===== -->
+      <div id="batch-view">
+        <header class="text-center mb-8">
+          <h1 class="text-3xl font-semibold text-zinc-100">📸 Google Photos Metadata Fixer</h1>
+          <p class="text-base text-zinc-400 mt-2">Batch apply metadata from Google Takeout JSON files to your photos.</p>
+        </header>
+
+        <!-- Step 1: Select Folder -->
+        <div class="card p-5 mb-6">
+          <label class="text-base font-semibold text-zinc-100 mb-4 block">1. Select Source Folder</label>
+          <div class="flex items-center space-x-3">
+            <div id="batch-folder-path" class="input-display flex-1 rounded-md px-4 py-2.5 text-sm truncate text-zinc-400">
+              No folder selected
+            </div>
+            <button id="batch-browse-btn" class="flex items-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-5 rounded-md transition duration-150 ease-in-out shadow-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 mr-2"><path fill-rule="evenodd" d="M2 4.75A2.75 2.75 0 0 1 4.75 2h5.5A2.75 2.75 0 0 1 13 4.75v1.5a.75.75 0 0 1-1.5 0v-1.5a1.25 1.25 0 0 0-1.25-1.25h-5.5A1.25 1.25 0 0 0 3.25 4.75v10.5A1.25 1.25 0 0 0 4.5 16.5h11a1.25 1.25 0 0 0 1.25-1.25v-7a.75.75 0 0 1 1.5 0v7A2.75 2.75 0 0 1 15.5 18h-11A2.75 2.75 0 0 1 1.75 15.25V4.75Z" clip-rule="evenodd" /></svg>
+              Browse
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 2: Timezone Option -->
+        <div class="card p-5 mb-6">
+          <label class="text-base font-semibold text-zinc-100 mb-4 block">2. Set Timezone Option</label>
+          <div class="space-y-4">
+            <label for="radio-pacific" class="flex items-center cursor-pointer group">
+              <input id="radio-pacific" type="radio" name="timezone" value="pacific" />
+              <div class="ml-1 text-sm"><span class="font-medium text-zinc-100 group-hover:text-blue-400 transition">🌊 Convert to Pacific Time (PDT/PST)</span><p class="text-zinc-400 text-xs mt-0.5">Automatically detects daylight saving time.</p></div>
+            </label>
+            <label for="radio-utc" class="flex items-center cursor-pointer group">
+              <input id="radio-utc" type="radio" name="timezone" value="utc" />
+              <div class="ml-1 text-sm"><span class="font-medium text-zinc-100 group-hover:text-blue-400 transition">🕐 Keep UTC time (no conversion)</span><p class="text-zinc-400 text-xs mt-0.5">For photos taken in other timezones (Eastern, etc.).</p></div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Step 3: View Progress -->
+        <div class="card p-5 mb-6">
+          <label class="text-base font-semibold text-zinc-100 mb-3 block">3. View Progress</label>
+          <div id="batch-log-container" class="log w-full h-52 p-3 rounded-md overflow-y-auto"></div>
+          <div class="progress-bar w-full rounded-full overflow-hidden mt-3">
+            <div class="progress-bar-inner"></div>
+          </div>
+        </div>
+
+        <!-- Footer Buttons -->
+        <footer class="flex items-center justify-between">
+          <div class="flex space-x-3">
+            <button id="batch-start-btn" disabled class="flex items-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-5 rounded-md transition duration-150 ease-in-out shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 mr-2"><path fill-rule="evenodd" d="M2 10a8 8 0 1 1 16 0 8 8 0 0 1-16 0Zm6.39-2.908a.75.75 0 0 1 .766.016l3.75 2.25a.75.75 0 0 1 0 1.284l-3.75 2.25a.75.75 0 0 1-1.156-.642V7.092a.75.75 0 0 1 .39-.658Z" clip-rule="evenodd" /></svg>
+              Start Processing
+            </button>
+            <button id="batch-clear-btn" class="flex items-center bg-zinc-600 hover:bg-zinc-700 text-zinc-100 font-semibold py-2.5 px-5 rounded-md transition duration-150 ease-in-out shadow-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 mr-2"><path fill-rule="evenodd" d="M8.75 1A2.75 2.75 0 0 0 6 3.75v.443c-.795.077-1.58.11-2.368.11a.75.75 0 0 0-.73.73V17.25c0 .414.336.75.75.75h13.5a.75.75 0 0 0 .75-.75V4.932a.75.75 0 0 0-.73-.73c-.788 0-1.573-.033-2.368-.11v-.443A2.75 2.75 0 0 0 11.25 1h-2.5ZM7.5 3.75c0-.69.56-1.25 1.25-1.25h2.5c.69 0 1.25.56 1.25 1.25v.443c-.909.06-1.84.098-2.793.109-.953-.011-1.884-.049-2.793-.109V3.75Zm-3 1.182c.764.057 1.545.093 2.341.107a.75.75 0 0 0 .717-.716V4.5c0 .414.336-.75.75-.75h2.5c.414 0 .75.336.75.75v.231c.01.001.019.002.029.003a.75.75 0 0 0 .716.715c.796-.014 1.577-.05 2.341-.107v11.318H4.5V4.932Zm5.25-.182a.75.75 0 0 0-1.5 0v9a.75.75 0 0 0 1.5 0v-9ZM12 4.75a.75.75 0 0 1 .75.75v9a.75.75 0 0 1-1.5 0v-9a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" /></svg>
+              Clear Log
+            </button>
+          </div>
+        </footer>
+      </div>
+      <!-- ===== End View 1 ===== -->
+
+      <!-- ===== View 2: Single File Editor ===== -->
+      <div id="single-view" class="hidden">
+        <header class="text-center mb-8">
+          <h1 class="text-3xl font-semibold text-zinc-100">🎬 Photo & Video Metadata Editor</h1>
+          <p class="text-base text-zinc-400 mt-2">Manually edit the date and time for a single media file.</p>
+        </header>
+
+        <!-- Step 1: Select File -->
+        <div class="card p-5 mb-6">
+          <label class="text-base font-semibold text-zinc-100 mb-4 block">1. Select Media File</label>
+          <div class="flex items-center space-x-3">
+            <div id="single-file-path" class="input-display flex-1 rounded-md px-4 py-2.5 text-sm truncate text-zinc-400">
+              No file selected
+            </div>
+            <button id="single-browse-btn" class="flex items-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-5 rounded-md transition duration-150 ease-in-out shadow-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 mr-2"><path d="M5.5 1.75a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V2.5a.75.75 0 0 1 .75-.75Z" /><path fill-rule="evenodd" d="M4.5 3A1.5 1.5 0 0 0 3 4.5v11A1.5 1.5 0 0 0 4.5 17h11a1.5 1.5 0 0 0 1.5-1.5v-11A1.5 1.5 0 0 0 15.5 3h-11Zm.75 3.75a.75.75 0 0 1 .75.75v6.5a.75.75 0 0 1-1.5 0v-6.5a.75.75 0 0 1 .75-.75Zm3 0a.75.75 0 0 1 .75.75v6.5a.75.75 0 0 1-1.5 0v-6.5a.75.75 0 0 1 .75-.75Zm3 0a.75.75 0 0 1 .75.75v6.5a.75.75 0 0 1-1.5 0v-6.5a.75.75 0 0 1 .75-.75Zm3 0a.75.75 0 0 1 .75.75v6.5a.75.75 0 0 1-1.5 0v-6.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" /></svg>
+              Choose File
+            </button>
+          </div>
+        </div>
+        
+        <!-- Step 2: New Date & Time -->
+        <div class="card p-5 mb-6">
+          <label class="text-base font-semibold text-zinc-100 mb-4 block">2. New Date & Time</label>
+          <div class="flex flex-col sm:flex-row sm:space-x-4">
+            <div class="flex-1 mb-4 sm:mb-0">
+              <label for="date-entry" class="block text-sm font-medium text-zinc-300 mb-1.5">Date (YYYY-MM-DD)</label>
+              <input type="text" id="date-entry" class="form-input w-full" placeholder="2025-10-31">
+            </div>
+            <div class="flex-1">
+              <label for="time-entry" class="block text-sm font-medium text-zinc-300 mb-1.5">Time (HH:MM:SS)</label>
+              <input type="text" id="time-entry" class="form-input w-full" placeholder="09:30:00">
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: Log -->
+        <div class="card p-5 mb-6">
+          <label class="text-base font-semibold text-zinc-100 mb-3 block">3. Log</label>
+          <div id="single-log-container" class="log w-full h-52 p-3 rounded-md overflow-y-auto"></div>
+        </div>
+
+        <!-- Footer Buttons -->
+        <footer class="flex items-center justify-between">
+          <div class="flex space-x-3">
+            <button id="single-update-btn" disabled class="flex items-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-5 rounded-md transition duration-150 ease-in-out shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 mr-2"><path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z" /></svg>
+              Update Metadata
+            </button>
+            <button id="single-clear-btn" class="flex items-center bg-zinc-600 hover:bg-zinc-700 text-zinc-100 font-semibold py-2.5 px-5 rounded-md transition duration-150 ease-in-out shadow-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 mr-2"><path fill-rule="evenodd" d="M8.75 1A2.75 2.75 0 0 0 6 3.75v.443c-.795.077-1.58.11-2.368.11a.75.75 0 0 0-.73.73V17.25c0 .414.336.75.75.75h13.5a.75.75 0 0 0 .75-.75V4.932a.75.75 0 0 0-.73-.73c-.788 0-1.573-.033-2.368-.11v-.443A2.75 2.75 0 0 0 11.25 1h-2.5ZM7.5 3.75c0-.69.56-1.25 1.25-1.25h2.5c.69 0 1.25.56 1.25 1.25v.443c-.909.06-1.84.098-2.793.109-.953-.011-1.884-.049-2.793-.109V3.75Zm-3 1.182c.764.057 1.545.093 2.341.107a.75.75 0 0 0 .717-.716V4.5c0 .414.336-.75.75-.75h2.5c.414 0 .75.336.75.75v.231c.01.001.019.002.029.003a.75.75 0 0 0 .716.715c.796-.014 1.577-.05 2.341-.107v11.318H4.5V4.932Zm5.25-.182a.75.75 0 0 0-1.5 0v9a.75.75 0 0 0 1.5 0v-9ZM12 4.75a.75.75 0 0 1 .75.75v9a.75.75 0 0 1-1.5 0v-9a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" /></svg>
+              Clear Log
+            </button>
+          </div>
+        </footer>
+      </div>
+      <!-- ===== End View 2 ===== -->
+
+    </div>
+  </main>
+
+  <script src="renderer.js"></script>
+</body>
+</html>
+
