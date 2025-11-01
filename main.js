@@ -23,15 +23,15 @@ function getExifToolPath() {
 
 function createWindow() {
   const win = new BrowserWindow({
-    width: 1100, // Wider for sidebar
-    height: 850,
+    width: 950, // Adjusted for no sidebar
+    height: 950,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
       nodeIntegration: false,
-      sandbox: false // Recommended for simplicity with preload
+      sandbox: false // Easiest way to handle preload/fs
     },
-    minWidth: 900,
+    minWidth: 800, // Adjusted min width
     minHeight: 750,
   });
 

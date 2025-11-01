@@ -58,7 +58,10 @@ def apply_metadata(file_path, date_str, time_str, exiftool_cmd):
         # Format for exiftool: YYYY:MM:DD HH:MM:SS
         exiftool_datetime = datetime_str.replace('-', ':')
         
-        cmd_args = ['-overwrite_original_in_place', '-q']
+        # --- FIXED: Swapped 'overwrite_original_in_place' for 'overwrite_original' ---
+        # This creates a new file, allowing FileCreateDate to be set reliably on subsequent edits.
+        cmd_args = ['-overwrite_original', '-q']
+        
         # Apply to all relevant tags
         cmd_args.append(f'-AllDates={exiftool_datetime}')
         cmd_args.append(f'-FileCreateDate={exiftool_datetime}')
