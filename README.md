@@ -1,15 +1,14 @@
 # **Metadata Toolkit**
 
 A user-friendly desktop app that combines two powerful tools into one: a **Google Photos Fixer** for batch-processing Google Takeout folders, and a **Single File Editor** for manually correcting individual media files.  
-Built with Electron and powered by Python, this app provides a clean, dark-mode interface to solve your metadata problems, whether you're fixing an entire library or just one file.
 
-## 
+<img width="1062" height="1012" src="./images/batch-tool.png" />
+<img width="1062" height="1012" src="./images/single-tool.png" />
 
-## **Features**
-
+## Features
 This toolkit provides two distinct modes, accessible from the main navigation bar:
 
-### **1\. Google Photos Fixer (Batch Tool)**
+### Google Photos Fixer (Batch Tool)
 
 Restore correct dates, times, GPS tags, and descriptions to your Google Photos exports by reading their Takeout JSON sidecars.
 
@@ -20,7 +19,7 @@ Restore correct dates, times, GPS tags, and descriptions to your Google Photos e
   * Moves media without matching JSONs to a NO\_METADATA\_FOUND folder.  
   * Collects all used JSONs into a JSON\_METADATA folder after processing.
 
-### **2\. Single File Editor (Manual Tool)**
+### Single File Editor (Manual Tool)
 
 Manually edit the date and time metadata of a single photo or video file.
 
@@ -28,21 +27,16 @@ Manually edit the date and time metadata of a single photo or video file.
 * **Date & Time Inputs:** Easily set a new, precise date (YYYY-MM-DD) and time (HH:MM:SS).  
 * **Comprehensive Update:** Writes the new timestamp to *all* relevant date/time tags inside the file (including AllDates, FileCreateDate, TrackCreateDate, etc.).
 
-## **Requirements**
 
-This application has **one major requirement** to function:  
-**You must have Python 3 installed on your computer.**  
-The app's interface is built with Electron, but its core logic runs using bundled Python scripts. The app needs to find the python3 (or python) executable on your system to work.
-
-* **macOS:** Download and install Python 3 from [python.org](https://www.python.org/). After installation, you may need to run the Install Certificates command located in your /Applications/Python 3.x folder.  
-* **Windows:** Download and install Python 3 from [python.org](https://www.python.org/).  
-  * **IMPORTANT:** During installation, make sure to check the box that says **"Add Python to PATH"**.
-
-You do **not** need to install ExifTool yourself. It is already bundled with the app.
+## Requirements
+- Python 3 installed on your system (macOS or Windows).  
+  - macOS: Verify it is installed with `python3 --version`. If needed, install from python.org.  
+  - Windows: Install from python.org and ensure “Add Python to PATH” is checked during setup.  
+- ExifTool is bundled with the app—no separate installation required for end users.  
 
 ## **How to Use**
 
-1. **Download:** Grab the .dmg (macOS) or .exe (Windows) installer from the [Releases Page](https://github.com/YOUR_USERNAME/YOUR_REPO_NAME/releases).  
+1. **Download:** Grab the .dmg (macOS) or .exe (Windows) installer from the [Releases Page](https://github.com/maybetoasty/Multi-Purpose-Metadata-Editor/releases).  
 2. **Install:**  
    * **macOS:** Open the .dmg and drag the **Metadata Toolkit** app to your "Applications" folder.  
    * **Windows:** Run the .exe installer.  
