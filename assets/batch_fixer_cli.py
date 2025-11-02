@@ -422,7 +422,7 @@ def process_photos(source_folder, timezone_mode, exiftool_path):
 # --- Main execution ---
 if __name__ == "__main__":
     if len(sys.argv) != 4:
-        log("Usage: python GooglePhotosMetadataFixer_cli.py <source_folder> <timezone_mode> <exiftool_path>", "error")
+        log("Usage: python batch_fixer_cli.py <source_folder> <timezone_mode> <exiftool_path>", "error")
         sys.exit(1)
 
     source_folder_arg = sys.argv[1]
